@@ -1,13 +1,11 @@
-const admin = require('firebase-admin');
-require('dotenv').config();
+const admin = require("firebase-admin");
 
-// Initialize Firebase Admin with the project ID
-const serviceAccount = require('./serviceAccountKey.json');
+const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
 
-// Initialize the app with a service account, granting admin privileges
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`
-});
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
 
 module.exports = admin;
