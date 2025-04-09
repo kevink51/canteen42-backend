@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen42 Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-container {
+            display: none;
+            padding: 20px;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div class="login-container" id="loginContainer">
+        <h2 class="text-center mb-4">Canteen42 Admin Login</h2>
+        <div class="alert alert-danger d-none" id="loginError"></div>
+        <form id="loginForm">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="dashboard-container" id="dashboardContainer">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Canteen42 Admin</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" id="dashboardLink">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="productsLink">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="ordersLink">Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="usersLink">Users</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="logoutLink">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <!-- Dashboard Overview -->
+            <div id="dashboardView">
+                <h2 class="mb-4">Dashboard Overview</h2>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-value" id="ordersCount">0</div>
+                            <div class="stat-label">ORDERS</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-value" id="productsCount">0</div>
+                            <div class="stat-label">PRODUCTS</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-value" id="usersCount">0</div>
+                            <div class="stat-label">USERS</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-value" id="revenueValue">$0</div>
+                            <div class="stat-label">REVENUE</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">Recent Orders</div>
+                            <div class="card-body">
+                                <table class="table table-striped" id="recentOrdersTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5" class="text-center">No orders found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">Top Products</div>
+                            <div class="card-body">
+                                <table class="table table-striped" id="topProductsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
+                                            <th>Sales</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" class="text-center">No products found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products View -->
+            <div id="productsView" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Products Management</h2>
+                    <button class="btn btn-primary" id="addProductBtn">Add New Product</button>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-striped" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="text-center">No products found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders View -->
+            <div id="ordersView" style="display: none;">
+                <h2 class="mb-4">Orders Management</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-striped" id="ordersTable">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7" class="text-center">No orders found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users View -->
+            <div id="usersView" style="display: none;">
+                <h2 class="mb-4">Users Management</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-striped" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Joined</th>
+                                    <th>Orders</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="text-center">No users found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            projectId: "canteen42-e1058",
+            // Other Firebase config would be added here in production
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const loginContainer = document.getElementById('loginContainer');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        
+        // Navigation links
+        const dashboardLink = document.getElementById('dashboardLink');
+        const productsLink = document.getElementById('productsLink');
+        const ordersLink = document.getElementById('ordersLink');
+        const usersLink = document.getElementById('usersLink');
+        const logoutLink = document.getElementById('logoutLink');
+        
+        // Views
+        const dashboardView = document.getElementById('dashboardView');
+        const productsView = document.getElementById('productsView');
+        const ordersView = document.getElementById('ordersView');
+        const usersView = document.getElementById('usersView');
+
+        // API URL - would be set to the actual backend URL in production
+        const API_URL = 'http://localhost:3000/api';
+
+        // Login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                loginError.classList.add('d-none');
+                
+                // Sign in with Firebase Auth
+                const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Get ID token for backend authentication
+                const idToken = await user.getIdToken();
+                
+                // Store token in localStorage
+                localStorage.setItem('adminToken', idToken);
+                
+                // Check if user is admin via backend
+                const response = await fetch(`${API_URL}/admin/dashboard`, {
+                    headers: {
+                        'Authorization': `Bearer ${idToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    // Show dashboard
+                    loginContainer.style.display = 'none';
+                    dashboardContainer.style.display = 'block';
+                    loadDashboardData();
+                } else {
+                    // Not an admin
+                    throw new Error('You do not have admin privileges');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                loginError.textContent = error.message || 'Failed to login. Please check your credentials.';
+                loginError.classList.remove('d-none');
+                
+                // Sign out if authentication succeeded but admin check failed
+                firebase.auth().signOut();
+            }
+        });
+
+        // Navigation handlers
+        dashboardLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(dashboardView);
+            loadDashboardData();
+        });
+        
+        productsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(productsView);
+            loadProducts();
+        });
+        
+        ordersLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(ordersView);
+            loadOrders();
+        });
+        
+        usersLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(usersView);
+            loadUsers();
+        });
+        
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            firebase.auth().signOut().then(() => {
+                localStorage.removeItem('adminToken');
+                dashboardContainer.style.display = 'none';
+                loginContainer.style.display = 'block';
+            });
+        });
+
+        // Helper function to show active view
+        function showView(view) {
+            dashboardView.style.display = 'none';
+            productsView.style.display = 'none';
+            ordersView.style.display = 'none';
+            usersView.style.display = 'none';
+            
+            view.style.display = 'block';
+        }
+
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                const token = localStorage.getItem('adminToken');
+                if (!token) {
+                    throw new Error('Not authenticated');
+                }
+                
+                const response = await fetch(`${API_URL}/admin/dashboard`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load dashboard data');
+                }
+                
+                const data = await response.json();
+                
+                // Update dashboard stats
+                document.getElementById('ordersCount').textContent = data.dashboardData.orders;
+                document.getElementById('productsCount').textContent = data.dashboardData.products;
+                document.getElementById('usersCount').textContent = data.dashboardData.users;
+                document.getElementById('revenueValue').textContent = `$${data.dashboardData.revenue}`;
+                
+                // Additional data loading for tables would be implemented here
+            } catch (error) {
+                console.error('Dashboard data error:', error);
+                // Handle error - redirect to login if authentication failed
+                if (error.message === 'Not authenticated') {
+                    dashboardContainer.style.display = 'none';
+                    loginContainer.style.display = 'block';
+                }
+            }
+        }
+
+        // Load products data
+        async function loadProducts() {
+            // Implementation would be similar to loadDashboardData
+            console.log('Loading products...');
+        }
+
+        // Load orders data
+        async function loadOrders() {
+            // Implementation would be similar to loadDashboardData
+            console.log('Loading orders...');
+        }
+
+        // Load users data
+        async function loadUsers() {
+            // Implementation would be similar to loadDashboardData
+            console.log('Loading users...');
+        }
+
+        // Check if user is already logged in
+        firebase.auth().onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    const idToken = await user.getIdToken();
+                    localStorage.setItem('adminToken', idToken);
+                    
+                    // Verify admin status
+                    const response = await fetch(`${API_URL}/admin/dashboard`, {
+                        headers: {
+                            'Authorization': `Bearer ${idToken}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        loginContainer.style.display = 'none';
+                        dashboardContainer.style.display = 'block';
+                        loadDashboardData();
+                    } else {
+                        throw new Error('Not an admin');
+                    }
+                } catch (error) {
+                    console.error('Auth state error:', error);
+                    firebase.auth().signOut();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
