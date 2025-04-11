@@ -96,9 +96,9 @@ app.get('/api/admin/orders', adminAuth, async (req, res) => {
   }
 });
 
-//app.get('/api/health', (req, res) => {
- // res.status(200).json({ status: 'ok', message: 'Canteen42 Admin API is running' });
-//});
+app.get('/api/health', (req, res) => {
+ res.status(200).json({ status: 'ok', message: 'Canteen42 Admin API is running' });
+});
 
 // Serve the admin dashboard for any other routes
 // app.get('*', (req, res) => {
