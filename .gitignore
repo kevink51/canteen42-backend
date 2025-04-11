@@ -13,7 +13,7 @@ yarn-error.log
 
 # Firebase service account
 serviceAccount.json
-*serviceAccount*.json
+
 
 # Build files
 /build
@@ -51,4 +51,4 @@ coverage
 # OS files
 .DS_Store
 Thumbs.db
-config/firebase-service-account.json
+
