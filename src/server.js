@@ -1,65 +1,65 @@
+// Main Server File
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
+const dotenv = require('dotenv');
 
-// Import configuration
-const appConfig = require('./config/app-config');
+// Load environment variables
+dotenv.config();
 
 // Import routes
-const authRoutes = require('./routes/auth');
-const productsRoutes = require('./routes/products');
-const ordersRoutes = require('./routes/orders');
-const paymentsRoutes = require('./routes/payments');
-const chatRoutes = require('./routes/chat');
-const adminProductsRoutes = require('./routes/admin-products');
-const adminOrdersRoutes = require('./routes/admin-orders');
-const adminDashboardRoutes = require('./routes/admin-dashboard');
+const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
+const couponRoutes = require('./routes/couponRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const dropshippingRoutes = require('./routes/dropshippingRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+const adminDashboardRoutes = require('./routes/adminDashboardRoutes');
 
-// Initialize express app
+// Initialize Express app
 const app = express();
-const PORT = appConfig.port;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors(appConfig.corsOptions));
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files
 app.use(express.static(path.join(__dirname, '../public')));
 
 // API Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/products', productsRoutes);
-app.use('/api/orders', ordersRoutes);
-app.use('/api/payments', paymentsRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/coupons', couponRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/dropshipping', dropshippingRoutes);
 app.use('/api/chat', chatRoutes);
-
-// Admin Routes
-app.use('/api/admin/products', adminProductsRoutes);
-app.use('/api/admin/orders', adminOrdersRoutes);
 app.use('/api/admin/dashboard', adminDashboardRoutes);
 
-// Health check route
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'ok', 
-    message: 'Canteen42 API is running',
-    environment: appConfig.nodeEnv,
-    version: process.env.APP_VERSION || '1.0.0'
+// Root route
+app.get('/', (req, res) => {
+  res.send('CANTEEN42 API is running');
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    error: err.message || 'Internal Server Error'
   });
 });
 
-// Serve the admin dashboard for admin routes
-app.get('/admin*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/admin.html'));
-});
-
-// Serve the frontend for all other routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
 // Start server
-app.listen(PORT, () => {
-  console.log(`Canteen42 API running on port ${PORT} in ${appConfig.nodeEnv} mode`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 module.exports = app;

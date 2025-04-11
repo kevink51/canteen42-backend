@@ -1,124 +1,97 @@
-# Canteen42 E-commerce Platform
+# CANTEEN42 E-commerce Platform
 
-A comprehensive e-commerce platform for outdoor and camping gear with admin dashboard, payment processing, and live chat support.
+A full-featured e-commerce platform for outdoor and camping gear, built with Node.js, Express, Firebase, and modern frontend technologies.
 
-## Features
+## Overview
 
-- **User Authentication**: Secure login and registration using Firebase Authentication
-- **Product Management**: Add, edit, and delete products with categories and search functionality
-- **Order Processing**: Complete order management system with fulfillment tracking
-- **Payment Integration**: Support for multiple payment processors (Stripe, PayPal, Square)
-- **Admin Dashboard**: Comprehensive admin interface for managing products, orders, and users
-- **Live Chat Support**: Integrated Tawk.to for customer support
-- **Responsive Design**: Mobile-friendly interface for customers
+CANTEEN42 is a comprehensive e-commerce solution that includes:
 
-## Tech Stack
-
-- **Backend**: Node.js with Express
-- **Database**: Firebase Firestore
-- **Authentication**: Firebase Authentication
-- **Payment Processing**: Stripe, PayPal, Square
-- **Live Chat**: Tawk.to
-- **Hosting**: Firebase Hosting
+- User authentication and account management
+- Product catalog with categories and search
+- Shopping cart and checkout functionality
+- Payment processing (Stripe, PayPal, Square)
+- Order management and tracking
+- Admin dashboard for store management
+- Dropshipping supplier integration
+- Live chat support via Tawk.to
 
 ## Project Structure
 
 ```
 canteen42-backend/
-├── public/                  # Static files for frontend
 ├── src/
-│   ├── config/              # Configuration files
-│   ├── controllers/         # Request handlers
-│   ├── middleware/          # Custom middleware
-│   ├── models/              # Data models
-│   ├── routes/              # API routes
-│   ├── services/            # Business logic
-│   └── utils/               # Utility functions
-├── .env                     # Environment variables (not in repo)
-├── .gitignore               # Git ignore file
-├── package.json             # Project dependencies
-└── README.md                # Project documentation
+│   ├── config/             # Configuration files
+│   ├── controllers/        # Request handlers
+│   ├── middleware/         # Express middleware
+│   ├── models/             # Data models and schemas
+│   ├── routes/             # API routes
+│   ├── services/           # Business logic
+│   ├── utils/              # Utility functions
+│   ├── frontend/           # Frontend components
+│   └── server.js           # Main application entry point
+├── public/                 # Static files
+├── docs/                   # Documentation
+│   ├── api/                # API documentation
+│   ├── setup/              # Setup guides
+│   └── images/             # Documentation images
+├── .env.example            # Environment variables template
+├── .gitignore              # Git ignore file
+├── package.json            # Project dependencies
+└── README.md               # Project overview
 ```
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- npm or yarn
-- Firebase project
-
-### Installation
+## Quick Start
 
 1. Clone the repository
-   ```
-   git clone https://github.com/your-username/canteen42.git
-   cd canteen42-backend
-   ```
+2. Install dependencies: `npm install`
+3. Configure environment variables: Copy `.env.example` to `.env` and update values
+4. Start the development server: `npm run dev`
 
-2. Install dependencies
-   ```
-   npm install
-   ```
+## Documentation
 
-3. Create a `.env` file in the root directory with the following variables:
-   ```
-   PORT=3000
-   NODE_ENV=development
-   
-   # Firebase
-   FIREBASE_PROJECT_ID=canteen42-e1058
-   
-   # Stripe
-   STRIPE_SECRET_KEY=your_stripe_secret_key
-   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
-   
-   # PayPal
-   PAYPAL_CLIENT_ID=your_paypal_client_id
-   PAYPAL_CLIENT_SECRET=your_paypal_client_secret
-   
-   # Square
-   SQUARE_ACCESS_TOKEN=your_square_access_token
-   SQUARE_LOCATION_ID=your_square_location_id
-   
-   # Tawk.to
-   TAWK_TO_PROPERTY_ID=your_tawkto_property_id
-   TAWK_TO_WIDGET_ID=your_tawkto_widget_id
-   ```
+For detailed documentation, please refer to the following:
 
-4. Start the development server
-   ```
-   npm run dev
-   ```
+- [Setup Guide](./docs/setup/setup-guide.md) - Step-by-step setup instructions
+- [API Documentation](./docs/api/api-documentation.md) - Detailed API reference
+- [Main Documentation](./docs/README.md) - Comprehensive project documentation
 
-## Deployment
+## Features
 
-The application can be deployed to Firebase Hosting:
+### User Features
 
-1. Install Firebase CLI
-   ```
-   npm install -g firebase-tools
-   ```
+- User registration and authentication
+- Product browsing and searching
+- Shopping cart management
+- Secure checkout process
+- Order history and tracking
+- User profile management
+- Wishlist functionality
+- Live chat support
 
-2. Login to Firebase
-   ```
-   firebase login
-   ```
+### Admin Features
 
-3. Initialize Firebase project
-   ```
-   firebase init
-   ```
+- Comprehensive admin dashboard
+- Product management
+- Order processing
+- Inventory management
+- User management
+- Sales analytics
+- Coupon management
+- Supplier integration
 
-4. Deploy to Firebase
-   ```
-   firebase deploy
-   ```
+## Technologies
+
+- **Backend**: Node.js, Express.js
+- **Database**: Firebase Firestore
+- **Authentication**: Firebase Authentication
+- **Payment Processing**: Stripe, PayPal, Square
+- **Live Chat**: Tawk.to
+- **Frontend Components**: React (for admin dashboard)
 
 ## License
 
-This project is proprietary and confidential.
+This project is proprietary and confidential. Unauthorized copying, distribution, or use is strictly prohibited.
 
-## Contact
+## Support
 
-For any inquiries, please contact the project owner.
+For support, please contact the development team or refer to the documentation.
