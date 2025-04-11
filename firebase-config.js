@@ -1,15 +1,13 @@
 const admin = require('firebase-admin');
-require('dotenv').config();
+const fs = require('fs');
 
-// Initialize Firebase Admin with the project ID
-const serviceAccount = {
-  "type": "service_account",
-  "project_id": "canteen42-e1058"
-  // Note: In a production environment, the rest of the service account credentials
-  // would be loaded from environment variables or a secure configuration
-};
+// Write the config string to a temporary JSON file
+const configPath = '/tmp/firebase-config.json';
+fs.writeFileSync(configPath, process.env.FIREBASE_CONFIG);
 
-// Initialize the app with a service account, granting admin privileges
+// Load it as a file
+const serviceAccount = require(configPath);
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`
