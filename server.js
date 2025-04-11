@@ -107,7 +107,8 @@ app.get('/api/health', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Canteen42 Admin API running on port ${PORT}`);
+  console.log(`✅ Canteen42 API is live on port ${PORT}`);
+
 });
 
 module.exports = app;
